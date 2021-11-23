@@ -7,10 +7,20 @@
 
 #include "IIR_LPFilter.h"
 #include "config.h"
+#include "gpio.h"
 #include "pps.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#define INTERRUPT_PROTECT(x)                \
+    {                                       \
+        char saved_ipl;                     \
+        SET_AND_SAVE_CPU_IPL(saved_ipl, 7); \
+        x;                                  \
+        RESTORE_CPU_IPL(saved_ipl);         \
+    }                                       \
+    (void)0;
 
 // Function Declarations
 void uart_init(void);
@@ -18,10 +28,13 @@ void clk_init(void);
 void uart_send_string(volatile uint8_t* _string);
 void timer1_init(void);
 void adc_init(void);
-volatile char sbuffer[256];
+
+// Variable Declarations
 volatile static uint16_t timerCount;
 volatile static uint16_t adcBuffer;
-volatile uint8_t* buffer = "dsPIC Initialize\r\n";
+volatile static bool filterUpdateFlag;
+volatile static char sbuffer[256];
+volatile static uint8_t* buffer;
 
 // Initialize IIR Filter
 IIR_LPFilter myFilter;
@@ -29,9 +42,11 @@ IIR_LPFilter myFilter;
 int main(void)
 {
 
+    // Initialized clock
     clk_init();
 
-    IIR_LPFilterInit(&myFilter, 0.5792, 0.1584);
+    // Initialize IIR filter coeffecients
+    IIR_LPFilterInit(&myFilter, 0.1367, -0.7265);
 
     // Configure LED Pin
     gpio_config_pin_output(GPIOD, 15);
@@ -54,9 +69,16 @@ int main(void)
     // Configure USART
     uart_init();
 
-    char bufferr[20];
-
     while (1) {
+
+        if (filterUpdateFlag) {
+
+            IIR_LPFilterUpdate(&myFilter, adcBuffer);
+            sprintf(sbuffer, "%i\r", (int)myFilter.yn);
+            uart_send_string(sbuffer);
+
+            filterUpdateFlag = 0;
+        }
     }
 
     return 0;
@@ -76,7 +98,6 @@ void __attribute__((interrupt, auto_psv)) _U1TXInterrupt(void)
         if (*buffer) {
             U1TXREG = *buffer;
             buffer++;
-        } else {
         }
     }
 }
@@ -92,15 +113,16 @@ void __attribute__((interrupt, auto_psv)) _T1Interrupt(void)
 
     IFS0bits.T1IF = 0;
 
-    if (timerCount % 5 == 0) {
-        ADCON3Lbits.SWCTRG = 1;
-        IIR_LPFilterUpdate(&myFilter, adcBuffer);
-        sprintf(sbuffer, "%i,%i\r", adcBuffer, (int)myFilter.yn);
-        uart_send_string(sbuffer);
-    }
+    filterUpdateFlag = 1;
 
-    if (timerCount >= 500) {
+    //    if (timerCount % 5 == 0) {
+    ADCON3Lbits.SWCTRG = 1;
+    //    }
+    //    gpio_pin_toggle(GPIOD, 15);
+
+    if (timerCount >= 1000) {
         gpio_pin_toggle(GPIOD, 15);
+
         timerCount = 0;
     }
 
@@ -220,7 +242,7 @@ void timer1_init(void)
     // TMR 0;
     TMR1 = 0x00;
     // Period = 0.0010012444 s; Frequency = 90000000 Hz; PR 351;
-    PR1 = 0x15F;
+    PR1 = 0xAF;
     // TCKPS 1:256; PRWIP Write complete; TMWIP Write complete; TON enabled; TSIDL
     // disabled; TCS FOSC/2; TECS T1CK; TSYNC disabled; TMWDIS disabled; TGATE
     // disabled;

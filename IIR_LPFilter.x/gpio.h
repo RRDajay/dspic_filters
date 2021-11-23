@@ -37,6 +37,8 @@ void gpio_config_pin_output (GPIO_Typedef *port,  uint16_t pinNum);
 
 void gpio_config_pin_input(GPIO_Typedef *port, uint16_t pinNum);
 
+void gpio_config_analog_pin(GPIO_Typedef *port, uint16_t pinNum);
+
 void gpio_pin_toggle(GPIO_Typedef *port, uint16_t pinNum);
 
 void gpio_pin_set(GPIO_Typedef *port, uint16_t pinNum);

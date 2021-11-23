@@ -10,6 +10,10 @@ void gpio_config_pin_input(GPIO_Typedef *port, uint16_t pinNum) {
     port->TRIS |= (1 << pinNum);
 }
 
+void gpio_config_analog_pin(GPIO_Typedef *port, uint16_t pinNum) {
+    port->LAT |= 1u << pinNum;
+}
+
 void gpio_pin_toggle(GPIO_Typedef *port, uint16_t pinNum) {
     // Toggle bit at pin position
     port->LAT ^= (1 << pinNum);

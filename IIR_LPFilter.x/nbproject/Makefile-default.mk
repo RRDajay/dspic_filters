@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c ../blink_led_demo_dspic33ch.X/pps.c ../blink_led_demo_dspic33ch.X/gpio.c IIR_LPFilter.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c IIR_LPFilter.c gpio.c pps.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1696427052/pps.o ${OBJECTDIR}/_ext/1696427052/gpio.o ${OBJECTDIR}/IIR_LPFilter.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/_ext/1696427052/pps.o.d ${OBJECTDIR}/_ext/1696427052/gpio.o.d ${OBJECTDIR}/IIR_LPFilter.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/IIR_LPFilter.o.d ${OBJECTDIR}/gpio.o.d ${OBJECTDIR}/pps.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/_ext/1696427052/pps.o ${OBJECTDIR}/_ext/1696427052/gpio.o ${OBJECTDIR}/IIR_LPFilter.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o
 
 # Source Files
-SOURCEFILES=main.c ../blink_led_demo_dspic33ch.X/pps.c ../blink_led_demo_dspic33ch.X/gpio.c IIR_LPFilter.c
+SOURCEFILES=main.c IIR_LPFilter.c gpio.c pps.c
 
 
 
@@ -95,54 +95,54 @@ MP_LINKER_FILE_OPTION=,--script=p33CH512MP506.gld
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: compile
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/3c427c93b38bb7d3f1013449d89c80496e785f32 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/1f2ed58e3f2b25f0a9bc72c6ff48229346a7cb28 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/_ext/1696427052/pps.o: ../blink_led_demo_dspic33ch.X/pps.c  .generated_files/flags/default/8c6ecb2053952fbf54e83e7375144261daf6b852 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
-	@${MKDIR} "${OBJECTDIR}/_ext/1696427052" 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/pps.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/pps.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../blink_led_demo_dspic33ch.X/pps.c  -o ${OBJECTDIR}/_ext/1696427052/pps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1696427052/pps.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/_ext/1696427052/gpio.o: ../blink_led_demo_dspic33ch.X/gpio.c  .generated_files/flags/default/261127e9d52f189f8b68740f600556a8fa05868e .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
-	@${MKDIR} "${OBJECTDIR}/_ext/1696427052" 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/gpio.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/gpio.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../blink_led_demo_dspic33ch.X/gpio.c  -o ${OBJECTDIR}/_ext/1696427052/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1696427052/gpio.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/IIR_LPFilter.o: IIR_LPFilter.c  .generated_files/flags/default/3778db8c8a96b73e11f1175f3d908594a1472d17 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+${OBJECTDIR}/IIR_LPFilter.o: IIR_LPFilter.c  .generated_files/flags/default/2d0ddb1e03fa2f2add0a9ad013c660d173d3bf27 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/IIR_LPFilter.o.d 
 	@${RM} ${OBJECTDIR}/IIR_LPFilter.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  IIR_LPFilter.c  -o ${OBJECTDIR}/IIR_LPFilter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/IIR_LPFilter.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
+${OBJECTDIR}/gpio.o: gpio.c  .generated_files/flags/default/c26ba9db430af0d9acc021fcc4236ff2d2eba058 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/gpio.o.d 
+	@${RM} ${OBJECTDIR}/gpio.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  gpio.c  -o ${OBJECTDIR}/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/gpio.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/pps.o: pps.c  .generated_files/flags/default/13c3d830b297aa058155a2e12734eb05aa34b131 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/pps.o.d 
+	@${RM} ${OBJECTDIR}/pps.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  pps.c  -o ${OBJECTDIR}/pps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/pps.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 else
-${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/4a3f5d420e434752762337ae0489e1a81b1dd82d .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/98becf5cc254b7abccb9a8c572909b21ee9663 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/main.o.d 
 	@${RM} ${OBJECTDIR}/main.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  main.c  -o ${OBJECTDIR}/main.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/main.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
-${OBJECTDIR}/_ext/1696427052/pps.o: ../blink_led_demo_dspic33ch.X/pps.c  .generated_files/flags/default/8c21828bc2caf354b5fa9c8dabfef59f69e8a4bc .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
-	@${MKDIR} "${OBJECTDIR}/_ext/1696427052" 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/pps.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/pps.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../blink_led_demo_dspic33ch.X/pps.c  -o ${OBJECTDIR}/_ext/1696427052/pps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1696427052/pps.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/_ext/1696427052/gpio.o: ../blink_led_demo_dspic33ch.X/gpio.c  .generated_files/flags/default/dc3d5db437f9252880b94427c42b93406a094abf .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
-	@${MKDIR} "${OBJECTDIR}/_ext/1696427052" 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/gpio.o.d 
-	@${RM} ${OBJECTDIR}/_ext/1696427052/gpio.o 
-	${MP_CC} $(MP_EXTRA_CC_PRE)  ../blink_led_demo_dspic33ch.X/gpio.c  -o ${OBJECTDIR}/_ext/1696427052/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/_ext/1696427052/gpio.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
-	
-${OBJECTDIR}/IIR_LPFilter.o: IIR_LPFilter.c  .generated_files/flags/default/d4738dab343abbb83018a0995174ec2d9acf9900 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+${OBJECTDIR}/IIR_LPFilter.o: IIR_LPFilter.c  .generated_files/flags/default/6c37ff6eb6daa869f0b3b39b23c76a3ba6fa791d .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
 	@${MKDIR} "${OBJECTDIR}" 
 	@${RM} ${OBJECTDIR}/IIR_LPFilter.o.d 
 	@${RM} ${OBJECTDIR}/IIR_LPFilter.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  IIR_LPFilter.c  -o ${OBJECTDIR}/IIR_LPFilter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/IIR_LPFilter.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/gpio.o: gpio.c  .generated_files/flags/default/fd02f28128543010fb900de39efd5a920ffd8689 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/gpio.o.d 
+	@${RM} ${OBJECTDIR}/gpio.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  gpio.c  -o ${OBJECTDIR}/gpio.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/gpio.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/pps.o: pps.c  .generated_files/flags/default/9f49998041e84ac66ac669a3e9c9307c19eec735 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/pps.o.d 
+	@${RM} ${OBJECTDIR}/pps.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  pps.c  -o ${OBJECTDIR}/pps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/pps.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 
