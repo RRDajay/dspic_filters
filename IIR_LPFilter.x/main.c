@@ -23,11 +23,12 @@
     (void)0;
 
 // Function Declarations
-void uart_init(void);
-void clk_init(void);
-void uart_send_string(volatile uint8_t* _string);
-void timer1_init(void);
-void adc_init(void);
+ void uart_init(void);
+ void clk_init(void);
+ void uart_send_string(volatile uint8_t* _string);
+ void timer1_init(void);
+ void adc_init(void);
+ void dac_init(void);
 
 // Variable Declarations
 volatile static uint16_t timerCount;
@@ -62,21 +63,20 @@ int main(void)
 
     // Configure ADC
     adc_init();
+    
+    dac_init();
 
     // Configure Timer1
     timer1_init();
 
     // Configure USART
     uart_init();
-
+    
     while (1) {
 
         if (filterUpdateFlag) {
 
             IIR_LPFilterUpdate(&myFilter, adcBuffer);
-            sprintf(sbuffer, "%i\r", (int)myFilter.yn);
-            uart_send_string(sbuffer);
-
             filterUpdateFlag = 0;
         }
     }
@@ -110,15 +110,11 @@ void __attribute__((interrupt, auto_psv)) _U1RXInterrupt(void)
 
 void __attribute__((interrupt, auto_psv)) _T1Interrupt(void)
 {
-
     IFS0bits.T1IF = 0;
-
     filterUpdateFlag = 1;
 
-    //    if (timerCount % 5 == 0) {
     ADCON3Lbits.SWCTRG = 1;
-    //    }
-    //    gpio_pin_toggle(GPIOD, 15);
+    DAC1DATH = myFilter.yn;
 
     if (timerCount >= 1000) {
         gpio_pin_toggle(GPIOD, 15);
@@ -127,6 +123,16 @@ void __attribute__((interrupt, auto_psv)) _T1Interrupt(void)
     }
 
     timerCount++;
+}
+
+void dac_init(void) {
+        
+    DACCTRL1L |= 1u << 6u; // Fvco/2 as clk source 
+        
+    DAC1CONL |= 1u << 9u;    // analog voltage is connected to the dacout1 pin
+    DAC1CONL |= 1u << 15u;   // enables dac1 module
+    
+    DACCTRL1L |= 1u << 15u; // enables all dac modules
 }
 
 void adc_init(void)
@@ -161,8 +167,7 @@ void adc_init(void)
 
     // Turn on module power
     ADCON5Lbits.SHRPWR = 1;
-    while (!(ADCON5Lbits.SHRRDY))
-        ;
+    while (!(ADCON5Lbits.SHRRDY));
     ADCON3Hbits.SHREN = 1;
 
     ADTRIG3Hbits.TRGSRC15 = 0x01;
@@ -225,8 +230,7 @@ void clk_init(void)
     __builtin_write_OSCCONL(OSCCON | 0x01);
 
     // Wait for Clock switch to occur
-    while (OSCCONbits.OSWEN != 0)
-        ;
+    while (OSCCONbits.OSWEN != 0);
 }
 
 void uart_send_string(volatile uint8_t* _string)
@@ -247,7 +251,7 @@ void timer1_init(void)
     // disabled; TCS FOSC/2; TECS T1CK; TSYNC disabled; TMWDIS disabled; TGATE
     // disabled;
     T1CON = 0x8030;
-
+    
     // Clear T1 flag
     IFS0 &= ~(1u << 1u);
     // Priority
