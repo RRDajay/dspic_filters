@@ -23,12 +23,12 @@
     (void)0;
 
 // Function Declarations
- void uart_init(void);
- void clk_init(void);
- void uart_send_string(volatile uint8_t* _string);
- void timer1_init(void);
- void adc_init(void);
- void dac_init(void);
+void uart_init(void);
+void clk_init(void);
+void uart_send_string(volatile uint8_t* _string);
+void timer1_init(void);
+void adc_init(void);
+void dac_init(void);
 
 // Variable Declarations
 volatile static uint16_t timerCount;
@@ -47,15 +47,15 @@ int main(void)
     clk_init();
 
     // Initialize IIR filter coeffecients
-    IIR_LPFilterInit(&myFilter, 0.1367, -0.7265);
+    IIR_LPFilterInit(&myFilter, 0.01547, -0.9691);
 
     // Configure LED Pin
     gpio_config_pin_output(GPIOD, 15);
     gpio_config_pin_output(GPIOC, 8);
 
     // Configure Pin for UART using PPS
-    pps_pin_config_input(U1RX, GPIOC, 15);
-    pps_pin_config_output(U1TX, GPIOC, 14);
+    // pps_pin_config_input(U1RX, GPIOC, 15);
+    // pps_pin_config_output(U1TX, GPIOC, 14);
 
     // Configure pins for ADC
     gpio_config_analog_pin(GPIOC, 7);
@@ -63,19 +63,19 @@ int main(void)
 
     // Configure ADC
     adc_init();
-    
+
+    // Configure DAC
     dac_init();
 
     // Configure Timer1
     timer1_init();
 
     // Configure USART
-    uart_init();
-    
+    // uart_init();
+
     while (1) {
 
         if (filterUpdateFlag) {
-
             IIR_LPFilterUpdate(&myFilter, adcBuffer);
             filterUpdateFlag = 0;
         }
@@ -118,21 +118,26 @@ void __attribute__((interrupt, auto_psv)) _T1Interrupt(void)
 
     if (timerCount >= 1000) {
         gpio_pin_toggle(GPIOD, 15);
-
         timerCount = 0;
     }
 
     timerCount++;
 }
 
-void dac_init(void) {
-        
-    DACCTRL1L |= 1u << 6u; // Fvco/2 as clk source 
-        
-    DAC1CONL |= 1u << 9u;    // analog voltage is connected to the dacout1 pin
-    DAC1CONL |= 1u << 15u;   // enables dac1 module
-    
-    DACCTRL1L |= 1u << 15u; // enables all dac modules
+void dac_init(void)
+{
+
+    // Fvco/2 as clk source
+    DACCTRL1L |= 1u << 6u;
+
+    // analog voltage is connected to the dacout1 pin
+    DAC1CONL |= 1u << 9u;
+
+    // enables dac1 module
+    DAC1CONL |= 1u << 15u;
+
+    // enables all dac modules
+    DACCTRL1L |= 1u << 15u;
 }
 
 void adc_init(void)
@@ -145,7 +150,7 @@ void adc_init(void)
     ADCON2Lbits.SHRADCS = 0;
 
     // Configure Shared ADC Core Resolution
-    ADCON1Hbits.SHRRES = 3; // 8 bit resolution
+    ADCON1Hbits.SHRRES = 3; // 12 bit resolution
 
     // Configure the output if integer or fractional
     ADCON1Hbits.FORM = 0; // integer
@@ -167,7 +172,8 @@ void adc_init(void)
 
     // Turn on module power
     ADCON5Lbits.SHRPWR = 1;
-    while (!(ADCON5Lbits.SHRRDY));
+    while (!(ADCON5Lbits.SHRRDY))
+        ;
     ADCON3Hbits.SHREN = 1;
 
     ADTRIG3Hbits.TRGSRC15 = 0x01;
@@ -230,7 +236,8 @@ void clk_init(void)
     __builtin_write_OSCCONL(OSCCON | 0x01);
 
     // Wait for Clock switch to occur
-    while (OSCCONbits.OSWEN != 0);
+    while (OSCCONbits.OSWEN != 0)
+        ;
 }
 
 void uart_send_string(volatile uint8_t* _string)
@@ -245,13 +252,10 @@ void timer1_init(void)
 {
     // TMR 0;
     TMR1 = 0x00;
-    // Period = 0.0010012444 s; Frequency = 90000000 Hz; PR 351;
+    // Tick Interrupt of 2000 Hz
     PR1 = 0xAF;
-    // TCKPS 1:256; PRWIP Write complete; TMWIP Write complete; TON enabled; TSIDL
-    // disabled; TCS FOSC/2; TECS T1CK; TSYNC disabled; TMWDIS disabled; TGATE
-    // disabled;
     T1CON = 0x8030;
-    
+
     // Clear T1 flag
     IFS0 &= ~(1u << 1u);
     // Priority
