@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c IIR_LPFilter.c gpio.c pps.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c IIR_LPFilter.c gpio.c pps.c IIR_biquad_filter.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/IIR_LPFilter.o.d ${OBJECTDIR}/gpio.o.d ${OBJECTDIR}/pps.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o ${OBJECTDIR}/IIR_biquad_filter.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/IIR_LPFilter.o.d ${OBJECTDIR}/gpio.o.d ${OBJECTDIR}/pps.o.d ${OBJECTDIR}/IIR_biquad_filter.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o ${OBJECTDIR}/IIR_biquad_filter.o
 
 # Source Files
-SOURCEFILES=main.c IIR_LPFilter.c gpio.c pps.c
+SOURCEFILES=main.c IIR_LPFilter.c gpio.c pps.c IIR_biquad_filter.c
 
 
 
@@ -119,6 +119,12 @@ ${OBJECTDIR}/pps.o: pps.c  .generated_files/flags/default/13c3d830b297aa058155a2
 	@${RM} ${OBJECTDIR}/pps.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  pps.c  -o ${OBJECTDIR}/pps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/pps.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
+${OBJECTDIR}/IIR_biquad_filter.o: IIR_biquad_filter.c  .generated_files/flags/default/4d24bfe4d9f769a13ab45fbbaa94a56f116e2475 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/IIR_biquad_filter.o.d 
+	@${RM} ${OBJECTDIR}/IIR_biquad_filter.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  IIR_biquad_filter.c  -o ${OBJECTDIR}/IIR_biquad_filter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/IIR_biquad_filter.o.d"      -g -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -mno-eds-warn  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
 else
 ${OBJECTDIR}/main.o: main.c  .generated_files/flags/default/98becf5cc254b7abccb9a8c572909b21ee9663 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
 	@${MKDIR} "${OBJECTDIR}" 
@@ -143,6 +149,12 @@ ${OBJECTDIR}/pps.o: pps.c  .generated_files/flags/default/9f49998041e84ac66ac669
 	@${RM} ${OBJECTDIR}/pps.o.d 
 	@${RM} ${OBJECTDIR}/pps.o 
 	${MP_CC} $(MP_EXTRA_CC_PRE)  pps.c  -o ${OBJECTDIR}/pps.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/pps.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
+	
+${OBJECTDIR}/IIR_biquad_filter.o: IIR_biquad_filter.c  .generated_files/flags/default/c52ad072e2c0f9a32710267adee5009eca2ceea4 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/IIR_biquad_filter.o.d 
+	@${RM} ${OBJECTDIR}/IIR_biquad_filter.o 
+	${MP_CC} $(MP_EXTRA_CC_PRE)  IIR_biquad_filter.c  -o ${OBJECTDIR}/IIR_biquad_filter.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -MP -MMD -MF "${OBJECTDIR}/IIR_biquad_filter.o.d"      -mno-eds-warn  -g -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  $(COMPARISON_BUILD)  -O0 -msmart-io=1 -Wall -msfr-warn=off    -mdfp="${DFP_DIR}/xc16"
 	
 endif
 

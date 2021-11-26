@@ -8,6 +8,7 @@
       <itemPath>IIR_LPFilter.h</itemPath>
       <itemPath>gpio.h</itemPath>
       <itemPath>pps.h</itemPath>
+      <itemPath>IIR_biquad_filter.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -20,6 +21,7 @@
       <itemPath>IIR_LPFilter.c</itemPath>
       <itemPath>gpio.c</itemPath>
       <itemPath>pps.c</itemPath>
+      <itemPath>IIR_biquad_filter.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
