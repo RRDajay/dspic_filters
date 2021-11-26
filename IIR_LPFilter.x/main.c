@@ -6,6 +6,7 @@
  */
 
 #include "IIR_LPFilter.h"
+#include "IIR_biquad_filter.h"
 #include "config.h"
 #include "gpio.h"
 #include "pps.h"
@@ -39,6 +40,7 @@ volatile static uint8_t* buffer;
 
 // Initialize IIR Filter
 IIR_LPFilter myFilter;
+IIR_BiQuad_DF1_Filter myfilt;
 
 int main(void)
 {
@@ -47,14 +49,16 @@ int main(void)
     clk_init();
 
     // Initialize IIR filter coeffecients
-    IIR_LPFilterInit(&myFilter, 0.01547, -0.9691);
+//    IIR_LPFilterInit(&myFilter, 0.01547, -0.9691);
+
+    IIR_BiQuad_DF1_Filter_Init(&myfilt, -1.6630, 0.7199, 0.0140, 0.0279, 0.0140);
 
     // Configure LED Pin
     gpio_config_pin_output(GPIOD, 15);
     gpio_config_pin_output(GPIOC, 8);
 
     // Configure Pin for UART using PPS
-    // pps_pin_config_input(U1RX, GPIOC, 15);
+//     pps_pin_config_input(U1RX, GPIOC, 15);
     // pps_pin_config_output(U1TX, GPIOC, 14);
 
     // Configure pins for ADC
@@ -76,7 +80,8 @@ int main(void)
     while (1) {
 
         if (filterUpdateFlag) {
-            IIR_LPFilterUpdate(&myFilter, adcBuffer);
+//            IIR_LPFilterUpdate(&myFilter, adcBuffer);
+            IIR_BiQuad_DF1_Filter_Update(&myfilt, adcBuffer);
             filterUpdateFlag = 0;
         }
     }
@@ -114,7 +119,7 @@ void __attribute__((interrupt, auto_psv)) _T1Interrupt(void)
     filterUpdateFlag = 1;
 
     ADCON3Lbits.SWCTRG = 1;
-    DAC1DATH = myFilter.yn;
+    DAC1DATH = myfilt.yn;
 
     if (timerCount >= 1000) {
         gpio_pin_toggle(GPIOD, 15);
@@ -150,7 +155,7 @@ void adc_init(void)
     ADCON2Lbits.SHRADCS = 0;
 
     // Configure Shared ADC Core Resolution
-    ADCON1Hbits.SHRRES = 3; // 12 bit resolution
+    ADCON1Hbits.SHRRES = 3u; // 12 bit resolution
 
     // Configure the output if integer or fractional
     ADCON1Hbits.FORM = 0; // integer
@@ -163,20 +168,20 @@ void adc_init(void)
 
     // Clear flags and Enable Interrupts
     _ADCAN15IF = 0;
-    _ADCAN15IE = 1;
-    ADIELbits.IE15 = 1;
+    _ADCAN15IE = 1u;
+    ADIELbits.IE15 = 1u;
 
     // Set ADON to enable the module and warmtime
-    ADCON1Lbits.ADON = 1;
+    ADCON1Lbits.ADON = 1u;
     ADCON5Hbits.WARMTIME = 0;
 
     // Turn on module power
-    ADCON5Lbits.SHRPWR = 1;
+    ADCON5Lbits.SHRPWR = 1u;
     while (!(ADCON5Lbits.SHRRDY))
         ;
-    ADCON3Hbits.SHREN = 1;
+    ADCON3Hbits.SHREN = 1u;
 
-    ADTRIG3Hbits.TRGSRC15 = 0x01;
+    ADTRIG3Hbits.TRGSRC15 = 0x01u;
 }
 
 void uart_init(void)
@@ -207,19 +212,19 @@ void uart_init(void)
     IFS0bits.U1TXIF = 0;
 
     // Configure Interrupt Priority Level
-    IPC3 |= (3 << _IPC3_U1TXIP_POSITION);
-    IPC3 |= (3 << _IPC3_U1TXIP_POSITION);
+    IPC3 |= (3u << _IPC3_U1TXIP_POSITION);
+    IPC3 |= (3u << _IPC3_U1TXIP_POSITION);
 
     // Enable TX Interrupt
-    IEC0 |= (1 << _IEC0_U1TXIE_POSITION);
-    IEC0 |= (1 << _IEC0_U1RXIE_POSITION);
+    IEC0 |= (1u << _IEC0_U1TXIE_POSITION);
+    IEC0 |= (1u << _IEC0_U1RXIE_POSITION);
 
     // Set UART Enable
-    U1MODEbits.UARTEN = 1;
+    U1MODEbits.UARTEN = 1u;
 
     // Set Transmit and Receiver Enable
-    U1MODEbits.UTXEN = 1;
-    U1MODEbits.URXEN = 1;
+    U1MODEbits.UTXEN = 1u;
+    U1MODEbits.URXEN = 1u;
 }
 
 void clk_init(void)
