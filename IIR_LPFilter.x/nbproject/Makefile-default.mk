@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=main.c IIR_LPFilter.c gpio.c pps.c IIR_biquad_filter.c
+SOURCEFILES_QUOTED_IF_SPACED=main.c IIR_LPFilter.c gpio.c pps.c IIR_biquad_filter.c IIR_Filter_Q15.s
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o ${OBJECTDIR}/IIR_biquad_filter.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/IIR_LPFilter.o.d ${OBJECTDIR}/gpio.o.d ${OBJECTDIR}/pps.o.d ${OBJECTDIR}/IIR_biquad_filter.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o ${OBJECTDIR}/IIR_biquad_filter.o ${OBJECTDIR}/IIR_Filter_Q15.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/main.o.d ${OBJECTDIR}/IIR_LPFilter.o.d ${OBJECTDIR}/gpio.o.d ${OBJECTDIR}/pps.o.d ${OBJECTDIR}/IIR_biquad_filter.o.d ${OBJECTDIR}/IIR_Filter_Q15.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o ${OBJECTDIR}/IIR_biquad_filter.o
+OBJECTFILES=${OBJECTDIR}/main.o ${OBJECTDIR}/IIR_LPFilter.o ${OBJECTDIR}/gpio.o ${OBJECTDIR}/pps.o ${OBJECTDIR}/IIR_biquad_filter.o ${OBJECTDIR}/IIR_Filter_Q15.o
 
 # Source Files
-SOURCEFILES=main.c IIR_LPFilter.c gpio.c pps.c IIR_biquad_filter.c
+SOURCEFILES=main.c IIR_LPFilter.c gpio.c pps.c IIR_biquad_filter.c IIR_Filter_Q15.s
 
 
 
@@ -161,7 +161,19 @@ endif
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: assemble
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
+${OBJECTDIR}/IIR_Filter_Q15.o: IIR_Filter_Q15.s  .generated_files/flags/default/8c505dadb661ee7720a3727ef73764872c3057e0 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/IIR_Filter_Q15.o.d 
+	@${RM} ${OBJECTDIR}/IIR_Filter_Q15.o 
+	${MP_CC} $(MP_EXTRA_AS_PRE)  IIR_Filter_Q15.s  -o ${OBJECTDIR}/IIR_Filter_Q15.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -D__DEBUG -D__MPLAB_DEBUGGER_REAL_ICE=1  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  -Wa,-MD,"${OBJECTDIR}/IIR_Filter_Q15.o.d",--defsym=__MPLAB_BUILD=1,--defsym=__ICD2RAM=1,--defsym=__MPLAB_DEBUG=1,--defsym=__DEBUG=1,--defsym=__MPLAB_DEBUGGER_REAL_ICE=1,-g,--no-relax$(MP_EXTRA_AS_POST)  -mdfp="${DFP_DIR}/xc16"
+	
 else
+${OBJECTDIR}/IIR_Filter_Q15.o: IIR_Filter_Q15.s  .generated_files/flags/default/819f6e06a4db2bf49b71316d21ed8926e23830c7 .generated_files/flags/default/c39017f4fda401a6f44cc2e27e55d84559012e1d
+	@${MKDIR} "${OBJECTDIR}" 
+	@${RM} ${OBJECTDIR}/IIR_Filter_Q15.o.d 
+	@${RM} ${OBJECTDIR}/IIR_Filter_Q15.o 
+	${MP_CC} $(MP_EXTRA_AS_PRE)  IIR_Filter_Q15.s  -o ${OBJECTDIR}/IIR_Filter_Q15.o  -c -mcpu=$(MP_PROCESSOR_OPTION)  -omf=elf -DXPRJ_default=$(CND_CONF)  -legacy-libc  -Wa,-MD,"${OBJECTDIR}/IIR_Filter_Q15.o.d",--defsym=__MPLAB_BUILD=1,-g,--no-relax$(MP_EXTRA_AS_POST)  -mdfp="${DFP_DIR}/xc16"
+	
 endif
 
 # ------------------------------------------------------------------------------------

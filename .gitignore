@@ -3,3 +3,5 @@
 /IIR_LPFilter.x/debug/
 /IIR_LPFilter.x/dist/
 /*/*.mc3
+
+*.csv

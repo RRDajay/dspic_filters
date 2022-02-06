@@ -8,10 +8,10 @@ Rp = 0.15;
 % Specify passband edge frequency and sampling rate
 Fs = 2000;
 Wc = 100;
-Wp = Wc * 2 * 1 / Fs;
+Wp = Wc  * 1 / Fs;
 
-% [b,a] = cheby1(n, Rp, Wp);
-[b,a] = cheby1(2, 0.15, 0.05)
+[b,a] = cheby1(n, Rp, Wp)
+% [b,a] = cheby1(2, 0.15, 0.05)
 freqz(b,a)
 
 dataIn = randn(1000,1);
